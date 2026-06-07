@@ -570,7 +570,7 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
                     {m.scrapeUrl ? (
                       <>
                         <p style={{ fontSize: 13, color: '#64748b', marginBottom: 12 }}>
-                          Syncs from <span style={{ fontFamily: 'monospace' }}>{m.scrapeUrl}</span> — runs hourly automatically.
+                          Syncs from <span style={{ fontFamily: 'monospace' }}>{m.scrapeUrl}</span>
                         </p>
                         <button
                           className="btn-admin btn-admin-primary btn-admin-sm"
