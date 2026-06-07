@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 interface ClassInfo {
   id: string
@@ -30,6 +30,7 @@ export function ApplyModal({ cls, onClose }: Props) {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [error, setError] = useState('')
+  const hpRef = useRef<HTMLInputElement>(null)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -38,7 +39,7 @@ export function ApplyModal({ cls, onClose }: Props) {
       const res = await fetch(`/api/classes/${cls.id}/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, website: hpRef.current?.value ?? '' }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -150,6 +151,7 @@ export function ApplyModal({ cls, onClose }: Props) {
             </div>
           ) : (
             <form onSubmit={submit}>
+              <input ref={hpRef} name="website" tabIndex={-1} aria-hidden="true" autoComplete="off" style={{ display: 'none' }} />
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 16 }}>
                 Your details
               </div>
@@ -160,6 +162,7 @@ export function ApplyModal({ cls, onClose }: Props) {
                   required
                   autoFocus
                   placeholder="e.g. Ahmad Hassan"
+                  maxLength={100}
                   value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                 />
@@ -171,6 +174,7 @@ export function ApplyModal({ cls, onClose }: Props) {
                   className="am-input"
                   required
                   placeholder="you@example.com"
+                  maxLength={254}
                   value={form.email}
                   onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                 />
@@ -182,6 +186,7 @@ export function ApplyModal({ cls, onClose }: Props) {
                 <textarea
                   className="am-input"
                   placeholder="Any questions or context…"
+                  maxLength={2000}
                   value={form.message}
                   onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                   style={{ minHeight: 72, resize: 'vertical' }}

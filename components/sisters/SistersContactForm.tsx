@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Arrow } from '@/components/ui/icons'
 
 export function SistersContactForm() {
   const [form, setForm] = useState({ firstName: '', email: '', topic: 'General enquiry', message: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const hpRef = useRef<HTMLInputElement>(null)
 
   function set(field: string, value: string) {
     setForm(f => ({ ...f, [field]: value }))
@@ -24,6 +25,7 @@ export function SistersContactForm() {
           email: form.email,
           topic: `Sisters – ${form.topic}`,
           message: form.message,
+          website: hpRef.current?.value ?? '',
         }),
       })
       setStatus(res.ok ? 'sent' : 'error')
@@ -49,15 +51,16 @@ export function SistersContactForm() {
 
   return (
     <form className="contact-form-card" onSubmit={submit}>
+      <input ref={hpRef} name="website" tabIndex={-1} aria-hidden="true" autoComplete="off" style={{ display: 'none' }} />
       <h2>Send a message</h2>
       <div className="contact-form-sub">Sr. Aisha usually replies within a day or two. Anything you write here stays with the sisters' team.</div>
       <div className="field">
         <label>Your name</label>
-        <input required type="text" placeholder="First name" value={form.firstName} onChange={e => set('firstName', e.target.value)} />
+        <input required type="text" maxLength={100} placeholder="First name" value={form.firstName} onChange={e => set('firstName', e.target.value)} />
       </div>
       <div className="field">
         <label>Email</label>
-        <input required type="email" placeholder="you@example.com" value={form.email} onChange={e => set('email', e.target.value)} />
+        <input required type="email" maxLength={254} placeholder="you@example.com" value={form.email} onChange={e => set('email', e.target.value)} />
       </div>
       <div className="field">
         <label>Topic</label>
@@ -72,7 +75,7 @@ export function SistersContactForm() {
       </div>
       <div className="field">
         <label>Message</label>
-        <textarea required placeholder="How can we help?" value={form.message} onChange={e => set('message', e.target.value)} />
+        <textarea required maxLength={2000} placeholder="How can we help?" value={form.message} onChange={e => set('message', e.target.value)} />
       </div>
       {status === 'error' && <p style={{ color: '#ef4444', fontSize: 14, marginBottom: 8 }}>Something went wrong. Please try again.</p>}
       <button type="submit" className="btn btn-teal" style={{ width: '100%', justifyContent: 'center' }} disabled={status === 'sending'}>

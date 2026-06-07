@@ -3,12 +3,31 @@
 import { useState, useEffect } from 'react'
 import { Icon } from '@/components/ui/icons'
 
+interface TipTapNode {
+  type: string
+  text?: string
+  content?: TipTapNode[]
+}
+
+function extractText(node: TipTapNode): string {
+  if (node.type === 'text') return node.text ?? ''
+  return (node.content ?? []).map(extractText).join(' ')
+}
+
+function readingTime(content: unknown): string {
+  if (!content) return ''
+  const words = extractText(content as TipTapNode).trim().split(/\s+/).filter(Boolean).length
+  const mins = Math.max(1, Math.round(words / 200))
+  return `${mins} min read`
+}
+
 interface Announcement {
   id: string
   title: string
   excerpt: string
   imageUrl?: string | null
   createdAt: string | Date
+  content?: unknown
 }
 
 interface Props {
@@ -18,11 +37,6 @@ interface Props {
 const HERO_WASH =
   'linear-gradient(180deg, rgba(14,61,82,0.25) 0%, rgba(14,61,82,0.1) 34%, rgba(14,61,82,0.62) 68%, rgba(14,61,82,0.95) 100%), '
 
-const FALLBACK_IMGS = [
-  'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=1400&q=80',
-  'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1400&q=80',
-  'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1400&q=80',
-]
 
 function formatDate(d: string | Date) {
   return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -45,7 +59,7 @@ export function HeroCarousel({ announcements }: Props) {
     return (
       <div
         className="hero-carousel"
-        style={{ backgroundImage: HERO_WASH + `url(${FALLBACK_IMGS[0]})` }}
+        style={{ backgroundImage: HERO_WASH + `url(/placeholder.svg)` }}
       >
         <div className="hero-photo-content">
           <span className="hero-photo-tag">Featured · Announcement</span>
@@ -65,18 +79,23 @@ export function HeroCarousel({ announcements }: Props) {
         <div
           key={a.id}
           className={`hero-slide ${i === idx ? 'active' : ''}`}
-          style={{ backgroundImage: HERO_WASH + `url(${a.imageUrl || FALLBACK_IMGS[i % FALLBACK_IMGS.length]})` }}
+          style={{ backgroundImage: HERO_WASH + `url(${a.imageUrl || '/placeholder.svg'})` }}
         >
           <div className="hero-photo-content">
             <span className="hero-photo-tag">Featured · Announcement</span>
             <h1 className="hero-photo-title">{a.title}</h1>
             <div className="hero-photo-meta">
               <span>{formatDate(a.createdAt)}</span>
-              <span>2 min read</span>
+              {readingTime(a.content) && <span>{readingTime(a.content)}</span>}
             </div>
-            <a href="#" className="hero-photo-cta">
-              Read more <Icon.Arrow width={14} height={14} />
-            </a>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+              <a href={`/announcements/${a.id}`} className="hero-photo-cta">
+                Read more <Icon.Arrow width={14} height={14} />
+              </a>
+              <a href="/announcements" className="hero-photo-cta" style={{ opacity: 0.7 }}>
+                All announcements
+              </a>
+            </div>
           </div>
         </div>
       ))}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAdminSession } from '@/lib/auth'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 interface PlaceResult {
   address?: string
@@ -89,9 +90,16 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+  if (!checkRateLimit(`halal:${ip}`, 3, 15 * 60 * 1000)) {
+    return NextResponse.json({ error: 'Too many requests, please try again later' }, { status: 429 })
+  }
+
   const body = await request.json()
-  const { category, googleUrl, hmc, prayer, family, notes } = body
+  const { website, category, googleUrl, hmc, prayer, family, notes } = body
   let { name } = body
+
+  if (website) return NextResponse.json({ ok: true })
 
   if (!category) return NextResponse.json({ error: 'Category required' }, { status: 400 })
 

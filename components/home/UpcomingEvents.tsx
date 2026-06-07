@@ -45,7 +45,7 @@ export function UpcomingEvents({ events }: { events: Event[] }) {
                 <div key={e.id} className="poster-card">
                   <div
                     className="poster-card-img"
-                    style={{ backgroundImage: `url(${e.imageUrl || 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=800&q=80'})` }}
+                    style={{ backgroundImage: `url(${e.imageUrl || '/placeholder.svg'})` }}
                   >
                     <span className="poster-card-tag">{e.tag}</span>
                     <div className="poster-card-date">

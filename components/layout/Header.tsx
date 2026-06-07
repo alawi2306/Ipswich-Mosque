@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useMasjid } from '@/contexts/MasjidContext'
 import { Icon } from '@/components/ui/icons'
-import { StatusBar } from './StatusBar'
 import { SalahStrip } from './SalahStrip'
 
 const NAV_ITEMS: [string, string][] = [
@@ -44,7 +43,6 @@ export function Header() {
 
   return (
     <>
-      <StatusBar />
       <header className="header">
         <div className="container header-inner">
           <Link href="/" className="brand">

@@ -13,8 +13,8 @@ export default async function HomePage() {
   const todayStr = today.toISOString().split('T')[0]
 
   const [announcements, events, prayerWeeks, timelineEntries] = await Promise.all([
-    prisma.$queryRawUnsafe<{ id: string; title: string; excerpt: string; imageUrl: string | null; createdAt: Date }[]>(
-      `SELECT id, title, excerpt, "imageUrl", "createdAt" FROM "Announcement" WHERE published = true ORDER BY "createdAt" DESC LIMIT 3`
+    prisma.$queryRawUnsafe<{ id: string; title: string; excerpt: string; imageUrl: string | null; createdAt: Date; content: unknown }[]>(
+      `SELECT id, title, excerpt, "imageUrl", "createdAt", content FROM "Announcement" WHERE published = true ORDER BY "sortOrder" ASC, "createdAt" DESC LIMIT 3`
     ),
     prisma.event.findMany({
       orderBy: { date: 'asc' },
@@ -55,6 +55,7 @@ export default async function HomePage() {
     ...a,
     imageUrl: a.imageUrl ?? null,
     createdAt: a.createdAt instanceof Date ? a.createdAt.toISOString() : a.createdAt,
+    content: a.content ?? null,
   }))
   const serializedEvents = events.map((e) => ({
     ...e,

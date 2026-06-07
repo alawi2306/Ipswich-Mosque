@@ -16,10 +16,15 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json()
-  const { name, email } = body
+  const { website, name, email } = body
+
+  if (website) return NextResponse.json({ ok: true })
+
   if (!name || !email) {
     return NextResponse.json({ error: 'Name and email required' }, { status: 400 })
   }
+  if (String(name).length > 100) return NextResponse.json({ error: 'Name too long' }, { status: 400 })
+  if (String(email).length > 254) return NextResponse.json({ error: 'Email too long' }, { status: 400 })
   try {
     const subscriber = await prisma.subscriber.create({ data: { name, email } })
     return NextResponse.json(subscriber, { status: 201 })

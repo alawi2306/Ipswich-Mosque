@@ -40,9 +40,9 @@ export function Footer() {
           <div className="footer-bottom">
             <div>© 2026 Suffolk Muslim Society. All rights reserved.</div>
             <div style={{ display: 'flex', gap: 18 }}>
-              <a href="#">Privacy policy</a>
-              <a href="#">Cookies</a>
-              <a href="#">Accessibility</a>
+              <Link href="/privacy">Privacy policy</Link>
+              <Link href="/cookies">Cookies</Link>
+              <Link href="/accessibility">Accessibility</Link>
             </div>
           </div>
         </div>

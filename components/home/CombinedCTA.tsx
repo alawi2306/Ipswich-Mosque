@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { StarPattern } from '@/components/ui/StarPattern'
 import { Icon } from '@/components/ui/icons'
@@ -10,6 +10,7 @@ export function CombinedCTA() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const hpRef = useRef<HTMLInputElement>(null)
 
   async function subscribe(e: React.FormEvent) {
     e.preventDefault()
@@ -19,7 +20,7 @@ export function CombinedCTA() {
       const res = await fetch('/api/subscribers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, website: hpRef.current?.value ?? '' }),
       })
       if (res.ok) {
         setStatus('done')
@@ -62,8 +63,9 @@ export function CombinedCTA() {
               </div>
             ) : (
               <form className="newsletter-form-v4" onSubmit={subscribe}>
-                <input required type="text" placeholder="Your name" value={name} onChange={e => setName(e.target.value)} />
-                <input required type="email" placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} />
+                <input ref={hpRef} name="website" tabIndex={-1} aria-hidden="true" autoComplete="off" style={{ display: 'none' }} />
+                <input required type="text" maxLength={100} placeholder="Your name" value={name} onChange={e => setName(e.target.value)} />
+                <input required type="email" maxLength={254} placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} />
                 <button type="submit" className="btn btn-primary" disabled={status === 'sending'}>
                   {status === 'sending' ? 'Subscribing…' : <><span>Subscribe</span> <Icon.Arrow width={14} height={14} /></>}
                 </button>

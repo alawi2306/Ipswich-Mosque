@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { MASJIDS as MASJID_DATA } from '@/lib/data'
 
 interface ClassData {
   id?: string
@@ -14,7 +15,7 @@ interface ClassData {
 }
 
 const CATEGORIES = ['Education', 'Sisters', 'Youth', 'Children', 'Community']
-const MASJIDS = ['Nawracy Mosque', 'Taqwa Mosque', 'Ipswich Mosque', 'Shah Jalal Mosque']
+const MASJID_NAMES = MASJID_DATA.map(m => m.name)
 
 export function ClassForm({ initial }: { initial?: Partial<ClassData> }) {
   const router = useRouter()
@@ -84,10 +85,26 @@ export function ClassForm({ initial }: { initial?: Partial<ClassData> }) {
         </div>
       </div>
       <div className="form-field">
-        <label className="form-label">Masjid</label>
-        <select className="form-select" value={form.masjid} onChange={e => set('masjid', e.target.value)}>
-          {MASJIDS.map(m => <option key={m}>{m}</option>)}
+        <label className="form-label">Location</label>
+        <select
+          className="form-select"
+          value={MASJID_NAMES.includes(form.masjid) ? form.masjid : '__custom__'}
+          onChange={e => set('masjid', e.target.value === '__custom__' ? '' : e.target.value)}
+        >
+          {MASJID_NAMES.map(m => <option key={m} value={m}>{m}</option>)}
+          <option value="__custom__">Other / custom location…</option>
         </select>
+        {!MASJID_NAMES.includes(form.masjid) && (
+          <input
+            className="form-input"
+            style={{ marginTop: 8 }}
+            value={form.masjid}
+            onChange={e => set('masjid', e.target.value)}
+            placeholder="e.g. Ipswich Town Hall, IP1 1BJ"
+            required
+            autoFocus
+          />
+        )}
       </div>
       <div className="form-field">
         <label className="form-label">Description (optional)</label>

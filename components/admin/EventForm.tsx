@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { FileUpload } from './FileUpload'
+import { ImageUploadWithCrop } from './ImageUploadWithCrop'
+import { MASJIDS as MASJID_DATA } from '@/lib/data'
 
 interface EventData {
   id?: string
@@ -15,7 +16,7 @@ interface EventData {
 }
 
 const TAGS = ['Community', 'Education', 'Youth', 'Outreach', 'Sisters']
-const MASJIDS = ['Nawracy Mosque', 'Taqwa Mosque', 'Ipswich Mosque', 'Shah Jalal Mosque']
+const MASJID_NAMES = MASJID_DATA.map(m => m.name)
 
 export function EventForm({ initial }: { initial?: Partial<EventData> }) {
   const router = useRouter()
@@ -80,10 +81,26 @@ export function EventForm({ initial }: { initial?: Partial<EventData> }) {
           </select>
         </div>
         <div className="form-field">
-          <label className="form-label">Masjid</label>
-          <select className="form-select" value={form.masjid} onChange={e => set('masjid', e.target.value)}>
-            {MASJIDS.map(m => <option key={m}>{m}</option>)}
+          <label className="form-label">Location</label>
+          <select
+            className="form-select"
+            value={MASJID_NAMES.includes(form.masjid) ? form.masjid : '__custom__'}
+            onChange={e => set('masjid', e.target.value === '__custom__' ? '' : e.target.value)}
+          >
+            {MASJID_NAMES.map(m => <option key={m} value={m}>{m}</option>)}
+            <option value="__custom__">Other / custom location…</option>
           </select>
+          {!MASJID_NAMES.includes(form.masjid) && (
+            <input
+              className="form-input"
+              style={{ marginTop: 8 }}
+              value={form.masjid}
+              onChange={e => set('masjid', e.target.value)}
+              placeholder="e.g. Ipswich Town Hall, IP1 1BJ"
+              required
+              autoFocus
+            />
+          )}
         </div>
       </div>
       <div className="form-field">
@@ -92,8 +109,14 @@ export function EventForm({ initial }: { initial?: Partial<EventData> }) {
       </div>
       <div className="form-field">
         <label className="form-label">Event image (optional)</label>
-        <FileUpload accept="image/jpeg,image/png,image/webp" onUpload={({ url }) => set('imageUrl', url)} />
-        {form.imageUrl && <div className="form-hint mt-2">Current image: <a href={form.imageUrl} target="_blank" rel="noopener" style={{ color: '#0ea5e9' }}>View</a></div>}
+        <ImageUploadWithCrop
+          folder="events"
+          aspect={3 / 2}
+          hint="Event card"
+          currentUrl={form.imageUrl || undefined}
+          onUpload={url => set('imageUrl', url)}
+          onRemove={() => set('imageUrl', '')}
+        />
       </div>
       <div style={{ display: 'flex', gap: 10 }}>
         <button type="submit" className="btn-admin btn-admin-primary" disabled={saving}>

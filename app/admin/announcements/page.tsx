@@ -1,9 +1,13 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { DeleteButton } from '../DeleteButton'
+import { ReorderButtons } from './ReorderButtons'
 
 export default async function AnnouncementsPage() {
-  const announcements = await prisma.announcement.findMany({ orderBy: { createdAt: 'desc' } })
+  const announcements = await prisma.announcement.findMany({
+    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
+  })
+
   return (
     <>
       <div className="admin-page-header">
@@ -18,6 +22,7 @@ export default async function AnnouncementsPage() {
           <table className="admin-table">
             <thead>
               <tr>
+                <th style={{ width: 72 }}>Order</th>
                 <th>Title</th>
                 <th>Excerpt</th>
                 <th>Status</th>
@@ -26,8 +31,15 @@ export default async function AnnouncementsPage() {
               </tr>
             </thead>
             <tbody>
-              {announcements.map(a => (
+              {announcements.map((a, i) => (
                 <tr key={a.id}>
+                  <td>
+                    <ReorderButtons
+                      id={a.id}
+                      isFirst={i === 0}
+                      isLast={i === announcements.length - 1}
+                    />
+                  </td>
                   <td className="font-bold">{a.title}</td>
                   <td className="text-muted text-sm truncate">{a.excerpt}</td>
                   <td>
@@ -47,7 +59,7 @@ export default async function AnnouncementsPage() {
                 </tr>
               ))}
               {announcements.length === 0 && (
-                <tr><td colSpan={5} style={{ textAlign: 'center', color: '#94a3b8', padding: 32 }}>No announcements yet</td></tr>
+                <tr><td colSpan={6} style={{ textAlign: 'center', color: '#94a3b8', padding: 32 }}>No announcements yet</td></tr>
               )}
             </tbody>
           </table>

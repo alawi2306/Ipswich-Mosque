@@ -54,8 +54,8 @@ export function ActivitiesPageClient({ classes }: { classes: ClassItem[] }) {
                 <div className="activity-card-when"><Clock width="11" height="11" />{c.dayTime}</div>
                 <p className="activity-card-desc">{c.description || ''}</p>
                 <div className="activity-card-meta">
-                  <div><Pin width="13" height="13" />{c.masjid}</div>
-                  <div><Mail width="13" height="13" />{c.teacher}</div>
+                  <a href="/contact" style={{ textDecoration: 'none', color: 'inherit' }}><Pin width="13" height="13" />{c.masjid}</a>
+                  <a href="/contact" style={{ textDecoration: 'none', color: 'inherit' }}><Mail width="13" height="13" />{c.teacher}</a>
                 </div>
                 <button
                   className="btn btn-teal btn-sm"

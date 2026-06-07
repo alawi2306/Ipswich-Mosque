@@ -58,7 +58,7 @@ export function EventsPageClient({ events }: { events: EventItem[] }) {
               const mon = MONTHS[d.getMonth()]
               return (
                 <div key={e.id} className="evt-card">
-                  <div className="evt-card-img" style={{ backgroundImage: `url(${e.imageUrl || '/logo-tight.png'})` }}>
+                  <div className="evt-card-img" style={{ backgroundImage: `url(${e.imageUrl || '/placeholder.svg'})` }}>
                     <div className="evt-card-date-tag">
                       <b className="tabnum">{day}</b>
                       <span>{mon}</span>

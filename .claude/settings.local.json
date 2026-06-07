@@ -27,7 +27,9 @@
       "Bash(node -e \"require\\('otplib'\\); require\\('qrcode'\\); console.log\\('ok'\\)\")",
       "Bash(pnpm add *)",
       "Bash(node -e \"const {authenticator} = require\\('otplib'\\); console.log\\(authenticator.generateSecret\\(\\)\\)\")",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(xargs grep *)",
+      "Bash(pnpm tsx *)"
     ]
   }
 }

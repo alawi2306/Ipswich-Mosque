@@ -26,7 +26,8 @@
     "otplib": "^13.4.1",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-image-crop": "^11.0.10"
   },
   "devDependencies": {
     "@types/node": "^22.15.0",

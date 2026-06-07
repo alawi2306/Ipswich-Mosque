@@ -16,10 +16,16 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json()
-  const { firstName, lastName, email, topic, message } = body
+  const { website, firstName, lastName, email, topic, message } = body
+
+  if (website) return NextResponse.json({ ok: true })
+
   if (!firstName || !lastName || !email || !topic || !message) {
     return NextResponse.json({ error: 'All fields required' }, { status: 400 })
   }
+  if (String(firstName).length > 100 || String(lastName).length > 100) return NextResponse.json({ error: 'Name too long' }, { status: 400 })
+  if (String(email).length > 254) return NextResponse.json({ error: 'Email too long' }, { status: 400 })
+  if (String(message).length > 2000) return NextResponse.json({ error: 'Message too long (max 2000 characters)' }, { status: 400 })
   const submission = await prisma.contactSubmission.create({
     data: { firstName, lastName, email, topic, message },
   })

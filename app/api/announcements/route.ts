@@ -8,8 +8,8 @@ export async function GET(request: NextRequest) {
 
   const announcements = await prisma.$queryRawUnsafe<object[]>(
     publishedOnly
-      ? `SELECT id, title, content, excerpt, "imageUrl", published, "createdAt", "updatedAt" FROM "Announcement" WHERE published = true ORDER BY "createdAt" DESC`
-      : `SELECT id, title, content, excerpt, "imageUrl", published, "createdAt", "updatedAt" FROM "Announcement" ORDER BY "createdAt" DESC`
+      ? `SELECT id, title, content, excerpt, "imageUrl", published, "sortOrder", "createdAt", "updatedAt" FROM "Announcement" WHERE published = true ORDER BY "sortOrder" ASC, "createdAt" DESC`
+      : `SELECT id, title, content, excerpt, "imageUrl", published, "sortOrder", "createdAt", "updatedAt" FROM "Announcement" ORDER BY "sortOrder" ASC, "createdAt" DESC`
   )
   return NextResponse.json(announcements)
 }
