@@ -18,7 +18,7 @@ export default async function PrayerTimesPage() {
     const seen = new Set<string>()
     daysByMasjid[m.id] = weeks
       .filter(w => w.masjidId === m.id)
-      .flatMap(w => w.days as DayEntry[])
+      .flatMap(w => w.days as unknown as DayEntry[])
       .sort((a, b) => a.date.localeCompare(b.date))
       .filter(d => !seen.has(d.date) && seen.add(d.date))
   }
