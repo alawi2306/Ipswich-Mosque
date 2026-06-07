@@ -11,9 +11,10 @@ function safePasswordCompare(input: string, actual: string): boolean {
   return timingSafeEqual(a, b)
 }
 
+const ALLOWED_EMAILS = ['alooshalishariefaloosh06@gmail.com', 'raydwanmiah1@gmail.com']
+
 function isWhitelisted(email: string): boolean {
-  const list = (process.env.ADMIN_EMAILS ?? '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
-  return list.includes(email.toLowerCase())
+  return ALLOWED_EMAILS.includes(email.toLowerCase())
 }
 
 export async function POST(request: NextRequest) {
