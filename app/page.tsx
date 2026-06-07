@@ -37,13 +37,13 @@ export default async function HomePage() {
       .sort((a, b) => b.weekStart.localeCompare(a.weekStart))
     let found: DayEntry | null = null
     for (const week of masjidWeeks) {
-      const days = week.days as DayEntry[]
+      const days = week.days as unknown as DayEntry[]
       const entry = days.find(d => d.date === todayStr)
       if (entry) { found = entry; break }
     }
     // Fall back to the most recent day available if today's exact date isn't stored
     if (!found && masjidWeeks.length > 0) {
-      const allDays = masjidWeeks.flatMap(w => w.days as DayEntry[]).sort((a, b) => b.date.localeCompare(a.date))
+      const allDays = masjidWeeks.flatMap(w => w.days as unknown as DayEntry[]).sort((a, b) => b.date.localeCompare(a.date))
       found = allDays[0] ?? null
     }
     todayTimes[m.id] = found
