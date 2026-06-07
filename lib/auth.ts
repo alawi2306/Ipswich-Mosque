@@ -1,9 +1,9 @@
 import { createHmac, timingSafeEqual } from 'crypto'
 
 export const COOKIE_NAME = 'sms_session'
-export const PW_OK_COOKIE = 'sms_pw_ok'
+export const OTP_COOKIE = 'sms_otp'
 const SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000
-const PW_OK_MAX_AGE_MS = 5 * 60 * 1000
+const OTP_MAX_AGE_MS = 10 * 60 * 1000
 
 function getSecret(): string {
   const secret = process.env.SESSION_SECRET
@@ -41,14 +41,14 @@ export function verifySessionToken(token: string | undefined): boolean {
   }
 }
 
-export function createPwOkToken(): string {
-  const payload = `pwok.${Date.now()}`
+export function createOtpToken(otp: string): string {
+  const payload = `otp.${otp}.${Date.now()}`
   const sig = createHmac('sha256', getSecret()).update(payload).digest('hex')
   return `${payload}.${sig}`
 }
 
-export function verifyPwOkToken(token: string | undefined): boolean {
-  if (!token) return false
+export function verifyOtpToken(token: string | undefined, code: string): boolean {
+  if (!token || !code) return false
   const lastDot = token.lastIndexOf('.')
   if (lastDot === -1) return false
 
@@ -56,19 +56,24 @@ export function verifyPwOkToken(token: string | undefined): boolean {
   const sig = token.slice(lastDot + 1)
 
   const parts = payload.split('.')
-  if (parts[0] !== 'pwok' || parts.length < 2) return false
-  const ts = parseInt(parts[1], 10)
-  if (isNaN(ts) || Date.now() - ts > PW_OK_MAX_AGE_MS) return false
+  if (parts[0] !== 'otp' || parts.length < 3) return false
+  const ts = parseInt(parts[2], 10)
+  if (isNaN(ts) || Date.now() - ts > OTP_MAX_AGE_MS) return false
 
   try {
     const expected = createHmac('sha256', getSecret()).update(payload).digest('hex')
     const sigBuf = Buffer.from(sig, 'hex')
     const expBuf = Buffer.from(expected, 'hex')
     if (sigBuf.length !== expBuf.length) return false
-    return timingSafeEqual(sigBuf, expBuf)
+    if (!timingSafeEqual(sigBuf, expBuf)) return false
   } catch {
     return false
   }
+
+  const storedOtp = parts[1]
+  const a = createHmac('sha256', getSecret()).update(code).digest()
+  const b = createHmac('sha256', getSecret()).update(storedOtp).digest()
+  return timingSafeEqual(a, b)
 }
 
 export function requireAdminSession(request: Request): void {

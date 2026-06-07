@@ -29,7 +29,10 @@
       "Bash(node -e \"const {authenticator} = require\\('otplib'\\); console.log\\(authenticator.generateSecret\\(\\)\\)\")",
       "Bash(node *)",
       "Bash(xargs grep *)",
-      "Bash(pnpm tsx *)"
+      "Bash(pnpm tsx *)",
+      "Bash(rm lib/totp.ts app/api/auth/setup-2fa/route.ts app/api/auth/verify-totp/route.ts app/admin/setup-2fa/page.tsx)",
+      "Bash(rmdir app/api/auth/setup-2fa app/api/auth/verify-totp app/admin/setup-2fa)",
+      "PowerShell(New-Item *)"
     ]
   }
 }
