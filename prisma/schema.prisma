@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  date        DateTime
+  time        String
+  description String
+  tag         String
+  masjid      String
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Class {
+  id          String   @id @default(cuid())
+  title       String
+  teacher     String
+  dayTime     String
+  schedule    String
+  description String?
+  masjid      String
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   Json
+  excerpt   String
+  imageUrl  String?
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Timetable {
+  id        String   @id @default(cuid())
+  masjidId  String
+  fileUrl   String
+  fileType  String
+  weekOf    String
+  createdAt DateTime @default(now())
+
+  @@index([masjidId])
+}
+
+model PrayerWeek {
+  id        String   @id @default(cuid())
+  masjidId  String
+  weekStart String
+  source    String
+  days      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([masjidId, weekStart])
+  @@index([masjidId])
+}
+
+model MasjidSettings {
+  id         String    @id @default(cuid())
+  masjidId   String    @unique
+  scrapeUrl  String?
+  postcode   String?
+  autoMethod String?
+  lastSynced DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model ClassApplication {
+  id        String   @id @default(cuid())
+  classId   String
+  className String
+  name      String
+  email     String
+  message   String?
+  createdAt DateTime @default(now())
+
+  @@index([classId])
+}
+
+model EventRegistration {
+  id        String   @id @default(cuid())
+  eventId   String
+  name      String
+  email     String
+  createdAt DateTime @default(now())
+
+  @@index([eventId])
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  topic     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Subscriber {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+}
+
+model HalalSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  address     String?
+  lat         Float?
+  lng         Float?
+  placeId     String?
+  googleUrl   String?
+  rating      Float?
+  reviewCount Int?
+  phone       String?
+  website     String?
+  hmc         Boolean  @default(false)
+  prayer      Boolean  @default(false)
+  family      Boolean  @default(false)
+  notes       String?
+  status      String   @default("pending")
+  submittedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TimelineEntry {
+  id        String   @id @default(cuid())
+  date      String
+  tag       String
+  title     String
+  desc      String
+  meta      String?
+  photos    Json     @default("[]")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

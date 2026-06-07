@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(npx tsc *)",
+      "Bash(powershell *)",
+      "Bash(npx prisma *)",
+      "Bash(npm run *)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\Aloos\\\\Ipswich Mosque origin\\\\app\\\\api\\\\timetables\\\\week\\\\[masjidId]\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\Aloos\\\\Ipswich Mosque origin\\\\app\\\\api\\\\timetables\\\\settings\\\\[masjidId]\")",
+      "WebFetch(domain:nawracymosque.org)",
+      "WebFetch(domain:www.attaqwa.co.uk)",
+      "WebFetch(domain:www.ipswichmosque.org)",
+      "WebFetch(domain:www.mpicc.org.uk)",
+      "Bash(ngrok version *)",
+      "Bash(ngrok config *)",
+      "Bash(node -e \"require\\('dotenv'\\).config\\(\\); console.log\\(process.env.DATABASE_URL ? 'DB URL found' : 'missing'\\);\")",
+      "Bash(node -e ' *)",
+      "Bash(npx tsx *)"
+    ]
+  }
+}

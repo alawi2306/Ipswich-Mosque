@@ -1,0 +1,154 @@
+Suggested Website Structure
+Homepage
+Header / Top Section
+SMS Logo 
+Navigation menu 
+Quick access buttons: 
+Upcoming Events 
+Salah Times 
+Volunteer 
+Sisters Section 
+Funeral Support 
+Contact Us 
+
+Top Banner Area
+Live Salah Times
+Display all salah times for the 4 local masaajid:
+Ipswich Mosque 
+Nawrucy Masjid 
+Taqwa Masjid
+Shajalal Islamic Center &amp; Masjid
+Format  as per below, but with each mosque having its own box below each other (but if you feel it can be done better on the eye in another format please do so.
+
+Recommended:
+Auto-updating prayer timetable 
+Jumu’ah times 
+
+Upcoming Events Section
+Cards with:
+Poster 
+Short description 
+“Register” button 
+
+Community Timeline / Previous Projects
+A visual timeline with photos and summaries:
+Poster 
+Short description
+Photos/Images
+
+
+Community Submission Section
+“Do you want to share something helpful for our community?”
+Button:
+Click Here
+This can allow:
+Event submissions 
+Community announcements 
+Volunteer opportunities 
+Business recommendations 
+Islamic reminders 
+
+New Page: Objectives of SMS
+Suggested Sections
+Our Vision
+Strengthening Muslims in Suffolk 
+Supporting Islamic identity 
+Building unity 
+Educating the community 
+Supporting Youth 
+Why This Work Matters
+Include:
+Importance of dawah 
+Community cohesion 
+Supporting future generations 
+Preserving Islamic identity locally 
+Long-Term Goals
+Islamic education 
+Youth development 
+Strong Muslim infrastructure in Suffolk 
+Community support systems 
+
+New Page: Be Part of the Project
+Volunteer Opportunities
+Event support 
+Media/design 
+Photography 
+IT/web support 
+Sisters support 
+Youth mentoring 
+Administration 
+Fundraising 
+Submit Islamic Articles
+Allow community contributions.
+Submit Ideas
+Encourage:
+“Even better if you can help action the idea.”
+
+New Page: Sisters Section
+Previous Sisters Events
+Gallery + summaries.
+Weekly Sisters Events
+Could include: 
+Sisters circles 
+Important:
+Separate sisters contact form 
+
+New Page: Halal Shops &amp; Restaurants in Ipswich
+Suggested Categories
+Restaurants
+Takeaways
+Butchers
+Grocery shops
+Dessert shops
+Potentially include:
+HMC status 
+Prayer facilities nearby 
+Family friendly 
+Reviews/recommendations 
+
+New Page: Regular Activities in Ipswich
+Examples
+Weekly classes 
+Hadith circles 
+Youth clubs 
+Football activities 
+Qur’an classes 
+Sisters programmes 
+Weekend madrasah 
+Charity collections 
+
+New Page: What To Do When a Loved One Passes Away in Ipswich
+Suggested Sections
+Immediate Steps
+Who to contact 
+GP/death certificate 
+Funeral director 
+Mosque contact 
+Janazah Process
+Ghusl 
+Kafan 
+Janazah salah 
+Burial 
+Local Resources
+Funeral services 
+Graveyard information 
+Mosque support contacts 
+Emotional/Islamic Guidance
+Islamic reminders 
+Support resources 
+Bereavement support 
+
+Footer (Bottom of Every Page)
+Newsletter Subscription
+Text:
+Subscribe to our regular newsletter for updates on local news, Islamic events, community projects, and activities happening across Suffolk.
+Fields:
+Name 
+Email 
+Subscribe button 
+Also include:
+Social media links 
+Contact email 
+WhatsApp channel 
+Copyright 
+Privacy policy

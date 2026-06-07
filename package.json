@@ -1,0 +1,36 @@
+{
+  "name": "suffolk-muslim-society",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "next": "^15.3.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@prisma/client": "^6.9.0",
+    "@aws-sdk/client-s3": "^3.800.0",
+    "@tiptap/react": "^2.22.0",
+    "@tiptap/pm": "^2.22.0",
+    "@tiptap/starter-kit": "^2.22.0",
+    "@tiptap/extension-placeholder": "^2.22.0",
+    "@tiptap/extension-underline": "^2.22.0",
+    "@tiptap/extension-link": "^2.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "prisma": "^6.9.0",
+    "tsx": "^4.19.4"
+  }
+}

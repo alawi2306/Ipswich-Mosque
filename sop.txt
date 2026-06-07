@@ -1,0 +1,104 @@
+Suffolk Muslim Society
+Website Project — Standard Operating Procedure
+Prepared: May 2026  |  Version 1.0
+1. Project Overview
+Client
+Suffolk Muslim Society (SMS)
+Contact
+Raydwan (committee liaison)
+Developer
+Ali S — 2nd year MBBS, Barts; founder of MedAnkiGen
+Domain
+suffolkmuslim.org (primary TBC) — also: suffolkmuslimsociety.org, suffolkmuslims.org
+Brand Colours
+Teal/Navy (#1B6B8A) and Gold (#B8962E) — from logo
+Total Fee
+£500 (one-time, full ownership to SMS on completion)
+Hosting
+Vercel (covered by developer, factored into fee)
+Stack
+Next.js · Neon (Postgres) · Prisma · Cloudflare R2 · Vercel
+Auth
+Simple password-based admin login (httpOnly cookie, env var)
+
+2. Project Vision
+SMS wants a one-stop community platform for Muslims in Suffolk — all the information they need in one place, regularly updated, and accessible to the whole community. The site should feel clean, professional, and trustworthy, in the style of the East London Mosque website (eastlondonmosque.org.uk).
+
+Design references provided by client:
+East London Mosque — eastlondonmosque.org.uk (primary reference)
+Cambridge Central Mosque — cambridgecentralmosque.org
+Chelmsford Muslim Society — chelmsfordmuslimsociety.org
+
+3. Project Phases
+Phase
+Payment
+Timeline
+Deliverables
+Phase 1
+30% (£150)
+~1 week
+Homepage design sent for approval · 2 additional pages · Basic admin page for prayer timetable uploads
+Phase 2
+50% (£250)
+Summer 2026
+Full admin dashboard · Prayer times for all 4 masjids · Janazah info page · Remaining pages · All dynamic content
+Phase 3
+20% (£100)
+6–12 months post-launch
+Marketplace / merch store · Any additional pages — quoted separately depending on scope
+
+4. Page Structure
+Phase 1 Pages
+Homepage — hero, mission statement, quick links, filler images (to be replaced by client)
+Prayer Timetables — displays timetables for all 4 masjids (see Section 5)
+Admin — basic upload page for prayer timetables (password protected)
+Phase 2 Pages
+Events — CRUD form, admin managed
+Classes — title, teacher, schedule, admin managed
+Announcements — TipTap rich text editor
+Janazah — step-by-step process, key contacts and numbers
+About Us — static, hardcoded
+Contact — static, hardcoded
+Full Admin Dashboard — manages all dynamic content
+
+5. Prayer Times Integration
+The timetables page will display prayer times for all 4 masjids in Suffolk. Data sources provided by client:
+
+Nawra Mosque — nawracymosque.org/ipswich-prayer-times/
+Masjid Taqwa — prayersconnect.com/mosques/82611734-masjid-taqwa-suffolk-england-united-kingdom
+Ipswich Mosque — ipswichmosque.org/prayer_time.php
+Shah Jalal Masjid — shahjalalmasjidipswich.co.uk/
+
+Approach: Timetable PDFs/images uploaded via admin dashboard and stored on Cloudflare R2. Public page fetches latest record from DB and renders. Admin can update weekly without any technical knowledge.
+
+6. Admin Dashboard
+A protected route at /admin, secured with a password-based httpOnly cookie (no third-party auth library required). The dashboard will include separate management sections for each content type:
+
+/admin/timetable — upload PDF or image per masjid
+/admin/events — create, edit, delete events
+/admin/classes — manage class schedule
+/admin/announcements — TipTap rich text editor
+
+No technical knowledge required from the committee — all content management is through simple forms and file uploads.
+
+7. Outstanding Items from Client
+The following are still required from SMS before or during the build:
+
+Confirmed primary domain (suffolkmuslim.org assumed)
+Logo file (high resolution — WhatsApp image received, higher quality preferred)
+Photos/images for homepage (filler images used in the meantime)
+Final list of pages for Phase 1 confirmation
+Main point of contact for feedback and design approvals
+
+8. Payment Terms
+Phase 1 deposit (30% = £150) due before build begins
+Phase 2 payment (50% = £250) due on Phase 2 delivery
+Phase 3 (20% = £100) due on Phase 3 delivery — scope to be agreed separately
+Full ownership of codebase and domain transferred to SMS on final payment
+Any major feature additions outside agreed scope will be quoted separately
+
+9. Developer Notes
+Build starts after exams finish — earliest June 1st 2026
+Stack is identical to MedAnkiGen (developer&apos;s existing platform) — no learning curve
+Hosting on Vercel free tier — sufficient for community site traffic levels
+Phase 3 marketplace/merch store will require Stripe integration and is a significant separate build
