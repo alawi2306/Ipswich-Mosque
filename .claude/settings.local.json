@@ -16,7 +16,18 @@
       "Bash(ngrok config *)",
       "Bash(node -e \"require\\('dotenv'\\).config\\(\\); console.log\\(process.env.DATABASE_URL ? 'DB URL found' : 'missing'\\);\")",
       "Bash(node -e ' *)",
-      "Bash(npx tsx *)"
+      "Bash(npx tsx *)",
+      "Bash(npm install *)",
+      "Bash(ngrok http *)",
+      "Bash(curl -s http://127.0.0.1:4040/api/tunnels)",
+      "Bash(Start-Process ngrok *)",
+      "Bash(Start-Sleep -Seconds 3)",
+      "Bash(Invoke-RestMethod -Uri \"http://127.0.0.1:4040/api/tunnels\")",
+      "Bash(ConvertTo-Json -Depth 5)",
+      "Bash(node -e \"require\\('otplib'\\); require\\('qrcode'\\); console.log\\('ok'\\)\")",
+      "Bash(pnpm add *)",
+      "Bash(node -e \"const {authenticator} = require\\('otplib'\\); console.log\\(authenticator.generateSecret\\(\\)\\)\")",
+      "Bash(node *)"
     ]
   }
 }

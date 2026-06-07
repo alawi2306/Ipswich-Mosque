@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdminSession } from '@/lib/auth'
 import type { DayEntry } from '@/lib/timetable'
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -42,6 +43,8 @@ async function tryDptApi(origin: string): Promise<DayEntry[] | null> {
 }
 
 export async function POST(request: NextRequest) {
+  try { requireAdminSession(request) } catch (r) { return r as Response }
+
   const { url } = await request.json()
   if (!url || typeof url !== 'string') {
     return NextResponse.json({ error: 'url is required' }, { status: 400 })
@@ -59,8 +62,8 @@ export async function POST(request: NextRequest) {
     if (!res.ok) return NextResponse.json({ error: `Failed to fetch URL (${res.status})` }, { status: 400 })
     html = await res.text()
     console.log('[scrape] fetched', url, '— html length:', html.length)
-  } catch (err) {
-    return NextResponse.json({ error: 'Failed to fetch URL', detail: String(err) }, { status: 400 })
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch URL' }, { status: 400 })
   }
 
   // DPT WordPress plugin — times are JS-rendered, use REST API instead

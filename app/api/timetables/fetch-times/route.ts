@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdminSession } from '@/lib/auth'
 import { getMondayOfWeek, formatAladhanTime } from '@/lib/timetable'
 import type { DayEntry } from '@/lib/timetable'
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 export async function GET(request: NextRequest) {
+  try { requireAdminSession(request) } catch (r) { return r as Response }
+
   const { searchParams } = new URL(request.url)
   const postcode = searchParams.get('postcode')
   const weekStartParam = searchParams.get('weekStart')
