@@ -33,7 +33,21 @@
       "Bash(rm lib/totp.ts app/api/auth/setup-2fa/route.ts app/api/auth/verify-totp/route.ts app/admin/setup-2fa/page.tsx)",
       "Bash(rmdir app/api/auth/setup-2fa app/api/auth/verify-totp app/admin/setup-2fa)",
       "PowerShell(New-Item *)",
-      "Bash(pnpm run *)"
+      "Bash(pnpm run *)",
+      "WebSearch",
+      "WebFetch(domain:www.shahjalalmasjidipswich.co.uk)",
+      "WebFetch(domain:us.trip.com)",
+      "WebFetch(domain:prayersconnect.com)",
+      "WebFetch(domain:www.nearestmosque.com)",
+      "WebFetch(domain:www.mosquepay.co.uk)",
+      "WebFetch(domain:shahjalal-islamic-centre-and-masjid.wheree.com)",
+      "WebFetch(domain:www.mosquedirectory.co.uk)",
+      "WebFetch(domain:www.eadt.co.uk)",
+      "WebFetch(domain:ak-d.tripcdn.com)",
+      "WebFetch(domain:ipswich-eng.uk-churches.com)",
+      "WebFetch(domain:www.facebook.com)",
+      "WebFetch(domain:www.nawracymosque.org)",
+      "WebFetch(domain:praysalat.com)"
     ]
   }
 }

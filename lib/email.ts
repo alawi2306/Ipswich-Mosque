@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function sendOtp(to: string, code: string): Promise<void> {
-  const from = process.env.FROM_EMAIL ?? 'onboarding@resend.dev'
+  const from = process.env.FROM_EMAIL ?? 'noreply@suffolkmuslim.org'
   const { data, error } = await resend.emails.send({
     from,
     to,

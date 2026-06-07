@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (!email || !isWhitelisted(email)) {
-    return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
+    return NextResponse.json({ error: 'Your email has not been granted access. Contact the developer to add it.' }, { status: 403 })
   }
 
   const adminEmails = process.env.ADMIN_EMAILS
