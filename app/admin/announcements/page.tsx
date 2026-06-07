@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { Announcement } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { DeleteButton } from '../DeleteButton'
 import { ReorderButtons } from './ReorderButtons'
@@ -31,7 +32,7 @@ export default async function AnnouncementsPage() {
               </tr>
             </thead>
             <tbody>
-              {announcements.map((a, i) => (
+              {announcements.map((a: Announcement, i: number) => (
                 <tr key={a.id}>
                   <td>
                     <ReorderButtons
