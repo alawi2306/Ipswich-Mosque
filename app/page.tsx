@@ -8,6 +8,8 @@ import { CommunityTimeline } from '@/components/home/CommunityTimeline'
 import { Masaajid } from '@/components/home/Masaajid'
 import { CombinedCTA } from '@/components/home/CombinedCTA'
 
+export const dynamic = 'force-dynamic'
+
 export default async function HomePage() {
   const today = new Date()
   const todayStr = today.toISOString().split('T')[0]

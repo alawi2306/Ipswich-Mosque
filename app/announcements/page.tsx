@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'News and announcements from Suffolk Muslim Society',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function AnnouncementsListPage() {
   const announcements = await prisma.announcement.findMany({
     where: { published: true },
