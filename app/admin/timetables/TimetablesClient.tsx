@@ -27,6 +27,7 @@ interface MasjidState {
   visibleCols: string[]
   showColPicker: boolean
   postcode: string
+  appendMode: boolean
 }
 
 interface WeekStatus {
@@ -48,6 +49,7 @@ function defaultState(): MasjidState {
     visibleCols: COLUMNS.map(c => c.key),
     showColPicker: false,
     postcode: '',
+    appendMode: false,
   }
 }
 
@@ -201,6 +203,14 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
     })
   }
 
+  function mergeDays(existing: DayEntry[], incoming: DayEntry[]): DayEntry[] {
+    const byDate = new Map(existing.map(d => [d.date, { ...d }]))
+    for (const day of incoming) {
+      byDate.set(day.date, { ...day })
+    }
+    return Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date))
+  }
+
   async function handleImageUpload(masjidId: string, file: File) {
     setState(masjidId, s => ({ ...s, loading: true, error: null, success: null }))
     try {
@@ -216,9 +226,12 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
         setState(masjidId, s => ({ ...s, loading: false, error: err.error ?? 'Extraction failed' }))
         return
       }
-      const { days } = await extRes.json()
-      const ws = days.length > 0 ? weekStartString(new Date(days[0].date)) : states[masjidId].weekStart
-      setState(masjidId, s => ({ ...s, loading: false, days, weekStart: ws }))
+      const { days: incoming } = await extRes.json()
+      const ws = incoming.length > 0 ? weekStartString(new Date(incoming[0].date)) : states[masjidId].weekStart
+      setState(masjidId, s => {
+        const days = s.appendMode ? mergeDays(s.days, incoming) : incoming
+        return { ...s, loading: false, days, weekStart: s.appendMode ? s.weekStart : ws }
+      })
     } catch (err) {
       setState(masjidId, s => ({ ...s, loading: false, error: String(err) }))
     }
@@ -343,13 +356,16 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
     })
 
     const firstWs = weekStartString(new Date(monthDays[0].date + 'T12:00:00'))
-    setState(masjidId, st => ({
-      ...st,
-      loading: false,
-      days: monthDays,
-      weekStart: firstWs,
-      syncStatus: `Fetched ${monthDays.length} days (begin times only — fill in congregation times)`,
-    }))
+    setState(masjidId, st => {
+      const days = st.appendMode ? mergeDays(st.days, monthDays) : monthDays
+      return {
+        ...st,
+        loading: false,
+        days,
+        weekStart: st.appendMode ? st.weekStart : firstWs,
+        syncStatus: `Fetched ${monthDays.length} days (begin times only — fill in congregation times)`,
+      }
+    })
   }
 
   async function handleSaveTimetable(masjidId: string) {
@@ -468,6 +484,14 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
                           </button>
                         </>
                       )}
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#64748b', cursor: 'pointer', userSelect: 'none', marginLeft: 4 }}>
+                        <input
+                          type="checkbox"
+                          checked={s.appendMode}
+                          onChange={e => setState(m.id, st => ({ ...st, appendMode: e.target.checked }))}
+                        />
+                        Append to existing
+                      </label>
                     </div>
 
                     {/* Column picker */}
