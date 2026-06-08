@@ -12,6 +12,7 @@ const NAV = [
   { href: '/admin/audience', label: 'Audience' },
   // { href: '/admin/halal', label: 'Halal' },
   { href: '/admin/timeline', label: 'Timeline' },
+  { href: '/admin/gallery', label: 'Photos' },
 ]
 
 export function AdminNav() {

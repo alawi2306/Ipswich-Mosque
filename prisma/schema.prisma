@@ -10,6 +10,22 @@ datasource db {
   // Required in Vercel env vars alongside DATABASE_URL
 }
 
+// Admin-uploaded mosque photos.
+//   kind "cover"   → overrides the stock image on the homepage location section (one per masjid)
+//   kind "gallery" → appears on the public /gallery page, grouped by masjid
+model MosqueImage {
+  id        String   @id @default(cuid())
+  masjidId  String // 'nawra' | 'taqwa' | 'ipswich' | 'shahjalal'
+  url       String
+  caption   String?
+  kind      String   @default("gallery") // "cover" | "gallery"
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([masjidId, kind])
+}
+
 model Event {
   id          String   @id @default(cuid())
   title       String

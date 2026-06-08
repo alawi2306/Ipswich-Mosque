@@ -1,8 +1,13 @@
 import Link from 'next/link'
 import { MASJIDS } from '@/lib/data'
+import { prisma } from '@/lib/prisma'
 import { Icon } from '@/components/ui/icons'
 
-export function Masaajid() {
+export async function Masaajid() {
+  // Admin-uploaded cover images override the stock image per masjid.
+  const covers = await prisma.mosqueImage.findMany({ where: { kind: 'cover' } })
+  const coverMap = new Map(covers.map((c) => [c.masjidId, c.url]))
+
   return (
     <section style={{ background: 'var(--bg-soft)', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
       <div className="container">
@@ -17,22 +22,25 @@ export function Masaajid() {
           </Link>
         </div>
         <div className="masjid-grid">
-          {MASJIDS.map((m) => (
-            <div key={m.id} className="masjid-card">
-              <div
-                className="masjid-card-img"
-                style={{ backgroundImage: `linear-gradient(180deg, rgba(14,61,82,0) 40%, rgba(14,61,82,0.55)), url(${m.img})` }}
-              />
-              <div className="masjid-card-body">
-                <h3 className="masjid-card-name">{m.name}</h3>
-                <div className="masjid-card-area">{m.area}</div>
-                <div style={{ fontSize: 13, color: 'var(--ink-2)', lineHeight: 1.5, display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                  <Icon.Pin width={14} height={14} style={{ color: 'var(--teal-500)', flexShrink: 0, marginTop: 2 }} />
-                  {m.address}
+          {MASJIDS.map((m) => {
+            const img = coverMap.get(m.id) ?? m.img
+            return (
+              <div key={m.id} className="masjid-card">
+                <div
+                  className="masjid-card-img"
+                  style={{ backgroundImage: `linear-gradient(180deg, rgba(14,61,82,0) 40%, rgba(14,61,82,0.55)), url(${img})` }}
+                />
+                <div className="masjid-card-body">
+                  <h3 className="masjid-card-name">{m.name}</h3>
+                  <div className="masjid-card-area">{m.area}</div>
+                  <div style={{ fontSize: 13, color: 'var(--ink-2)', lineHeight: 1.5, display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                    <Icon.Pin width={14} height={14} style={{ color: 'var(--teal-500)', flexShrink: 0, marginTop: 2 }} />
+                    {m.address}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

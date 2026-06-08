@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'File content does not match declared type' }, { status: 415 })
   }
 
-  const ALLOWED_FOLDERS = ['timetables', 'timeline', 'events', 'classes', 'announcements']
+  const ALLOWED_FOLDERS = ['timetables', 'timeline', 'events', 'classes', 'announcements', 'mosques']
   const folder = ALLOWED_FOLDERS.includes(request.nextUrl.searchParams.get('folder') ?? '')
     ? (request.nextUrl.searchParams.get('folder') as string)
     : 'uploads'

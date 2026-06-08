@@ -2346,6 +2346,18 @@ section { padding: 48px 0; }
 .gallery-tile-caption b { display: block; font-size: 14px; font-weight: 700; }
 .gallery-tile-caption span { font-size: 12px; opacity: 0.8; }
 
+/* Gallery page — per-mosque filter chips */
+.gallery-filter {
+  font-size: 13px; font-weight: 600;
+  padding: 7px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: white; color: var(--ink-2);
+  cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+}
+.gallery-filter:hover { border-color: var(--teal-500); color: var(--ink); }
+.gallery-filter.active {
+  background: var(--teal-700); border-color: var(--teal-700); color: white;
+}
+
 .sisters-contact { padding: 56px 0; }
 .sisters-contact-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 32px;

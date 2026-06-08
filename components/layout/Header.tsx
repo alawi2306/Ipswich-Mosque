@@ -13,6 +13,7 @@ const NAV_ITEMS: [string, string][] = [
   ['/events', 'Events'],
   ['/classes', 'Classes'],
   ['/contact', 'Addresses & Contacts'],
+  ['/gallery', 'Gallery'],
   ['/timeline', 'Our History'],
   // ['/sisters', 'Sisters'],
   // ['/halal', 'Halal Guide'],
