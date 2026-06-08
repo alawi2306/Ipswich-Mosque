@@ -6,6 +6,8 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+  // DIRECT_URL = same as DATABASE_URL but without -pooler in the hostname
+  // Required in Vercel env vars alongside DATABASE_URL
 }
 
 model Event {

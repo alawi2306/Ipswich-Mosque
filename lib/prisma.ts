@@ -3,6 +3,10 @@ import { PrismaClient } from '@prisma/client'
 const MUTATIONS = new Set(['create', 'update', 'delete', 'upsert', 'createMany', 'updateMany', 'deleteMany'])
 
 function makePrisma() {
+  const dbUrl = process.env.DATABASE_URL ?? ''
+  const dbHost = dbUrl.match(/@([^/?]+)/)?.[1] ?? 'unknown'
+  console.log(`[db] init — host: ${dbHost}`)
+
   return new PrismaClient({
     log: [{ level: 'error', emit: 'stdout' }, { level: 'warn', emit: 'stdout' }],
   }).$extends({
