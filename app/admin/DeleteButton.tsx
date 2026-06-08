@@ -14,8 +14,16 @@ export function DeleteButton({ id, endpoint }: Props) {
 
   async function doDelete() {
     setDeleting(true)
-    await fetch(`${endpoint}/${id}`, { method: 'DELETE' })
-    router.refresh()
+    try {
+      const res = await fetch(`${endpoint}/${id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error(await res.text())
+      router.refresh()
+    } catch (err) {
+      console.error('[DeleteButton]', err)
+      alert('Failed to delete. Please try again.')
+      setDeleting(false)
+      setConfirming(false)
+    }
   }
 
   if (confirming) {
