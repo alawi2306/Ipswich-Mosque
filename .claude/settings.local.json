@@ -47,7 +47,12 @@
       "WebFetch(domain:ipswich-eng.uk-churches.com)",
       "WebFetch(domain:www.facebook.com)",
       "WebFetch(domain:www.nawracymosque.org)",
-      "WebFetch(domain:praysalat.com)"
+      "WebFetch(domain:praysalat.com)",
+      "WebFetch(domain:web.archive.org)",
+      "WebFetch(domain:webcache.googleusercontent.com)",
+      "WebFetch(domain:archive.org)",
+      "Bash(grep -r \"calendarByAddress\\\\|postcode\" \"/c/Users/Aloos/Ipswich Mosque origin\" --include=\"*.ts\" --include=\"*.tsx\" ! -path \"*/.next/*\" ! -path \"*/node_modules/*\")",
+      "Bash(grep *)"
     ]
   }
 }

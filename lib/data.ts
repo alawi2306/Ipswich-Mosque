@@ -10,6 +10,7 @@ export interface Masjid {
   email: string
   img: string
   scrapeUrl?: string
+  note?: string
 }
 
 export interface PrayerTimes {
@@ -120,6 +121,7 @@ export const MASJIDS: Masjid[] = [
     email: 'info@nawracymosque.org',
     img: '/mosque-nawracy.jpg',
     scrapeUrl: 'https://nawracymosque.org/ipswich-prayer-times/',
+    note: 'Timetable data is from 2025 — please re-sync or update manually.',
   },
   {
     id: 'taqwa',
@@ -130,7 +132,7 @@ export const MASJIDS: Masjid[] = [
     phone: '01473 218 660',
     email: 'info@masjidtaqwa.org',
     img: '/mosque-taqwa.jpg',
-    scrapeUrl: 'https://www.attaqwa.co.uk/full-timetable/',
+    note: 'Masjid Taqwa has no website. Begin times can be estimated via postcode — congregation (iqamah) times must be filled in manually or from their monthly Facebook timetable.',
   },
   {
     id: 'ipswich',
@@ -152,7 +154,8 @@ export const MASJIDS: Masjid[] = [
     phone: '01473 412983',
     email: 'info@shahjalalmasjidipswich.co.uk',
     img: '/mosque-shahjalal.jpg',
-    scrapeUrl: 'https://www.mpicc.org.uk/index.php/prayer-timetable',
+    scrapeUrl: 'https://www.shahjalalmasjidipswich.co.uk/',
+    note: 'This site only shows today\'s prayer times — each sync imports today only, not the full month.',
   },
 ]
 

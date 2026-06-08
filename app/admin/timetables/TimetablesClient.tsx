@@ -10,9 +10,10 @@ interface MasjidInfo {
   short: string
   area: string
   scrapeUrl: string | null
+  note: string | null
 }
 
-type Tab = 'image' | 'scraper'
+type Tab = 'image' | 'scraper' | 'api'
 
 interface MasjidState {
   tab: Tab
@@ -25,6 +26,7 @@ interface MasjidState {
   syncStatus: string | null
   visibleCols: string[]
   showColPicker: boolean
+  postcode: string
 }
 
 interface WeekStatus {
@@ -45,6 +47,7 @@ function defaultState(): MasjidState {
     syncStatus: null,
     visibleCols: COLUMNS.map(c => c.key),
     showColPicker: false,
+    postcode: '',
   }
 }
 
@@ -103,7 +106,6 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
         setState(masjidId, s => ({
           ...s,
           postcode: data.postcode ?? '',
-          apiAutoSync: data.autoMethod === 'api',
         }))
       }
       if (weeksRes.ok) {
@@ -293,6 +295,63 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
     }))
   }
 
+  async function handleApiFetch(masjidId: string) {
+    const s = states[masjidId]
+    if (!s.postcode) return
+    setState(masjidId, st => ({ ...st, loading: true, error: null, syncStatus: null }))
+
+    try {
+      await fetch(`/api/timetables/settings/${masjidId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postcode: s.postcode, autoMethod: 'api' }),
+      })
+    } catch {}
+
+    // Collect all Mondays covering the current month
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth()
+    const weeks: string[] = []
+    const cursor = new Date(year, month, 1)
+    while (cursor.getDay() !== 1) cursor.setDate(cursor.getDate() - 1)
+    while (cursor.getFullYear() < year || cursor.getMonth() <= month) {
+      weeks.push(cursor.toISOString().split('T')[0])
+      cursor.setDate(cursor.getDate() + 7)
+      if (cursor.getFullYear() > year || cursor.getMonth() > month) break
+    }
+
+    const allDays: DayEntry[] = []
+    for (const ws of weeks) {
+      try {
+        const res = await fetch(`/api/timetables/fetch-times?postcode=${encodeURIComponent(s.postcode)}&weekStart=${ws}`)
+        if (res.ok) {
+          const { days } = await res.json()
+          allDays.push(...(days as DayEntry[]))
+        }
+      } catch {}
+    }
+
+    if (allDays.length === 0) {
+      setState(masjidId, st => ({ ...st, loading: false, error: 'No times returned from API' }))
+      return
+    }
+
+    const monthDays = allDays.filter(d => {
+      const [y, m] = d.date.split('-').map(Number)
+      return y === year && m === month + 1
+    })
+
+    const firstWs = weekStartString(new Date(monthDays[0].date + 'T12:00:00'))
+    setState(masjidId, st => ({
+      ...st,
+      loading: false,
+      days: monthDays,
+      weekStart: firstWs,
+      syncStatus: `Fetched ${monthDays.length} days (begin times only — fill in congregation times)`,
+    }))
+  }
+
   async function handleSaveTimetable(masjidId: string) {
     const s = states[masjidId]
     if (s.days.length === 0) return
@@ -373,6 +432,14 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
             {/* Card body */}
             {isExpanded && (
               <div className="tt-card-body">
+
+                {/* Admin note */}
+                {m.note && (
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '9px 13px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 7, marginBottom: 16, fontSize: 13, color: '#92400e' }}>
+                    <span style={{ flexShrink: 0 }}>⚠</span>
+                    <span>{m.note}</span>
+                  </div>
+                )}
 
                 {/* Timetable table — always visible above the tabs */}
                 {s.loadingData && (
@@ -589,6 +656,36 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
                   </div>
                 )}
 
+
+                {/* Estimate by Location tab — commented out
+                {s.tab === 'api' && (
+                  <div>
+                    <p style={{ fontSize: 13, color: '#64748b', marginBottom: 12 }}>
+                      Fetches estimated begin times for the current month using the AlAdhan API. Congregation times will be blank and must be filled in manually.
+                    </p>
+                    <div className="form-field" style={{ maxWidth: 280 }}>
+                      <label className="form-label">Postcode</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        placeholder="e.g. IP1 3DZ"
+                        value={s.postcode}
+                        onChange={e => setState(m.id, st => ({ ...st, postcode: e.target.value }))}
+                      />
+                    </div>
+                    <button
+                      className="btn-admin btn-admin-primary btn-admin-sm"
+                      disabled={s.loading || !s.postcode}
+                      onClick={() => handleApiFetch(m.id)}
+                    >
+                      {s.loading ? 'Fetching…' : 'Fetch estimated times'}
+                    </button>
+                    {s.syncStatus && (
+                      <span style={{ marginLeft: 12, fontSize: 12, color: '#16a34a' }}>{s.syncStatus}</span>
+                    )}
+                  </div>
+                )}
+                */}
 
                 {/* Error / success messages */}
                 {s.error && (
