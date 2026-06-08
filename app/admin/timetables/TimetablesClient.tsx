@@ -357,7 +357,7 @@ export function TimetablesClient({ masjids }: { masjids: MasjidInfo[] }) {
     if (s.days.length === 0) return
     setState(masjidId, st => ({ ...st, loading: true, error: null, success: null }))
     const sourceMap: Record<Tab, string> = {
-      image: 'ai-image', scraper: 'scrape',
+      image: 'ai-image', scraper: 'scrape', api: 'api',
     }
     const source = sourceMap[s.tab]
     // Split into weeks so we never store multiple months worth in one record
