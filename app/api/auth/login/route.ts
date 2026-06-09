@@ -11,7 +11,22 @@ function safePasswordCompare(input: string, actual: string): boolean {
   return timingSafeEqual(a, b)
 }
 
-const ALLOWED_EMAILS = ['alooshalishariefaloosh06@gmail.com', 'raydwanmiah1@gmail.com']
+const ALLOWED_EMAILS = [
+  'alooshalishariefaloosh06@gmail.com',
+  'raydwanmiah1@gmail.com',
+  'foyzur1@gmail.com',
+  'syedsayem786@gmail.com',
+  'sabbir.m.s1824@gmail.com',
+  'drimaadkhalid@gmail.com',
+  'smrmoksud@live.co.uk',
+  'ayyubhussain02@gmail.com',
+  'muminur.rahman@gmail.com',
+  'mustakim.meah@gmail.com',
+  'niaz.miah@hotmail.com',
+  'ryhanmiah@hotmail.co.uk',
+  'a.kalam11@outlook.com',
+  'alawi2906@gmail.com',
+]
 
 function isWhitelisted(email: string): boolean {
   return ALLOWED_EMAILS.includes(email.toLowerCase())
